@@ -1,0 +1,13 @@
+  40 INSERT INTO `adjacency` (`idx`, `pre`, `post`, `imgNum`, `weight`) VALUES
+  61 INSERT INTO `area` (`index`, `Name`, `IMG_Number`, `patch_index`, `area`, `cx`, `cy`, `chem_out`, `chem_out_contin`, `chem_in`, `chem_in_contin`, `electrical`, `electrical_contin`, `cell_body`) VALUES
+  16 INSERT INTO `contin` (`continID`, `CON_Number`, `CON_AlternateName`, `CON_AlternateName2`, `CON_Remarks`, `type`, `series`, `count`, `sectionNum1`, `sectionNum2`, `synSections`, `eleSections`) VALUES
+ 516 INSERT INTO `display2` (`x1`, `y1`, `z1`, `cellbody1`, `remarks1`, `continNum`, `segmentNum`, `idx`, `branch1`, `objName1`, `series1`, `x2`, `y2`, `z2`, `cellbody2`, `remarks2`, `branch2`, `objName2`, `series2`) VALUES
+   1 INSERT INTO `holes` (`index`, `Name`, `IMG_Number`, `patch_index`, `area`, `cx`, `cy`) VALUES
+  14 INSERT INTO `image` (`ID`, `IMG_Number`, `IMG_File`, `IMG_Directory`, `IMG_Worm`, `IMG_Series`, `IMG_PrintNumber`, `IMG_NegativeNumber`, `IMG_SectionNumber`, `IMG_EnteredBy`, `IMG_DateEntered`, `IMG_zoomValue`, `IMG_brightnessValue`, `IMG_contrastValue`, `IMG_rotatedValue`, `IMG_Remarks`, `IMG_originX`, `IMG_originY`) VALUES
+ 549 INSERT INTO `object` (`OBJ_Name`, `OBJ_X`, `OBJ_Y`, `OBJ_Remarks`, `IMG_Number`, `CON_Number`, `type`, `fromObj`, `toObj`, `checked`, `username`, `DateEntered`, `certainty`, `size`, `cellType`, `forMap`) VALUES
+ 176 INSERT INTO `relationship` (`relID`, `REL_Remarks`, `ObjName1`, `ObjName2`, `segmentNum`, `continNum`) VALUES
+   1 INSERT INTO `series` (`idx`, `series`, `x`, `y`, `z`, `zoomx`, `zoomy`, `zoomz`) VALUES
+   1 INSERT INTO `Sheet1` (`A`, `B`, `C`, `D`, `E`) VALUES
+  23 INSERT INTO `synapsecombined` (`idx`, `pre`, `post`, `type`, `members`, `sections`, `post1`, `post2`, `post3`, `post4`, `type2`, `series`, `partnerNum`, `mid`, `preobj`, `postobj1`, `postobj2`, `postobj3`, `postobj4`, `continNum`) VALUES
+  10 INSERT INTO `synapsenomultiple` (`idx`, `pre`, `post`, `sections`, `type`) VALUES
+  28 INSERT INTO `synrecord` (`idx`, `synID`, `username`, `DateEntered`, `certainty`, `size`, `partner`) VALUES

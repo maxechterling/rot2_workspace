@@ -1,0 +1,235 @@
+synapsecombined;
+object;
+contin;
+adjacency;
+area;
+display2;
+holes;
+image;
+relationship;
+series;
+synapsenomultiple;
+synrecord;
+
+mysql> show columns from synapsecombined;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| idx        | int(11)      | NO   | PRI | NULL    | auto_increment | 1
+| pre        | varchar(50)  | YES  |     | NULL    |                | 2
+| post       | varchar(100) | YES  |     | NULL    |                | 3
+| type       | varchar(10)  | YES  |     | NULL    |                | 4
+| members    | text         | YES  |     | NULL    |                | 5
+| sections   | tinyint(4)   | YES  |     | NULL    |                | 6
+| post1      | varchar(40)  | YES  |     | NULL    |                | 7
+| post2      | varchar(40)  | YES  |     | NULL    |                | 8
+| post3      | varchar(40)  | YES  |     | NULL    |                | 9
+| post4      | varchar(40)  | YES  |     | NULL    |                | 10
+| type2      | varchar(40)  | YES  |     | NULL    |                | 11
+| series     | varchar(20)  | YES  |     | NULL    |                | 12
+| partnerNum | tinyint(4)   | YES  |     | 1       |                | 13
+| mid        | varchar(20)  | YES  |     | NULL    |                | 14
+| preobj     | varchar(20)  | YES  |     | NULL    |                | 15
+| postobj1   | varchar(20)  | YES  |     | NULL    |                | 16
+| postobj2   | varchar(20)  | YES  |     | NULL    |                | 17
+| postobj3   | varchar(20)  | YES  |     | NULL    |                | 18
+| postobj4   | varchar(20)  | YES  |     | NULL    |                | 19
+| continNum  | smallint(6)  | YES  |     | 0       |                | 20
++------------+--------------+------+-----+---------+----------------+
+20 rows in set (0.00 sec)
+
+mysql> show columns from object;
++-------------+---------------------------------------------------------+
+| Field       | Type                                                    |  
++-------------+---------------------------------------------------------+ 
+| OBJ_Name    | int(11) unsigned                                        | 1  
+| OBJ_X       | int(10) unsigned                                        | 2   
+| OBJ_Y       | int(10) unsigned                                        | 3   
+| OBJ_Remarks | varchar(254)                                            | 4  
+| IMG_Number  | varchar(30)                                             | 5      
+| CON_Number  | int(11) unsigned                                        | 6    
+| type        | set('cell','cell branch point','chemical','electrical') | 7  
+| fromObj     | varchar(20)                                             | 8 
+| toObj       | varchar(60)                                             | 9       
+| checked     | tinyint(4)                                              | 10         
+| username    | varchar(10)                                             | 11      
+| DateEntered | date                                                    | 12 
+| certainty   | set('certain','uncertain')                              | 13  
+| size        | set('small','normal','large')                           | 14   
+| cellType    | tinyint(4)                                              | 15         
+| forMap      | varchar(30)                                             | 16         
++-------------+---------------------------------------------------------+
+16 rows in set (0.00 sec)
+
+mysql> show columns from contin;
++--------------------+------------------+------+-----+---------+----------------+
+| Field              | Type             | Null | Key | Default | Extra          |
++--------------------+------------------+------+-----+---------+----------------+
+| continID           | int(10) unsigned | NO   | PRI | NULL    | auto_increment | 1
+| CON_Number         | int(11) unsigned | NO   | UNI | 0       |                | 2
+| CON_AlternateName  | varchar(250)     | YES  | MUL | NULL    |                | 3
+| CON_AlternateName2 | varchar(40)      | YES  |     | NULL    |                | 4
+| CON_Remarks        | varchar(254)     | YES  |     | NULL    |                | 5
+| type               | varchar(20)      | YES  |     | neuron  |                | 6
+| series             | varchar(30)      | YES  |     | NULL    |                | 7
+| count              | int(11)          | YES  |     | 0       |                | 8
+| sectionNum1        | int(11)          | YES  |     | 0       |                | 9
+| sectionNum2        | int(11)          | YES  |     | 0       |                | 10
+| synSections        | int(11)          | YES  |     | 0       |                | 11
+| eleSections        | int(11)          | YES  |     | 0       |                | 12
++--------------------+------------------+------+-----+---------+----------------+ 
+12 rows in set (0.00 sec)
+
+mysql> show columns from adjacency;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| idx    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| pre    | varchar(20) | YES  |     | NULL    |                |
+| post   | varchar(20) | YES  |     | NULL    |                |
+| imgNum | varchar(50) | YES  |     | NULL    |                |
+| weight | int(11)     | NO   |     | 1       |                |
++--------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> show columns from area;
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| index             | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Name              | varchar(250) | YES  |     | NULL    |                |
+| IMG_Number        | varchar(250) | YES  |     | NULL    |                |
+| patch_index       | int(100)     | YES  |     | NULL    |                |
+| area              | int(255)     | YES  |     | NULL    |                |
+| cx                | int(255)     | YES  |     | NULL    |                |
+| cy                | int(255)     | YES  |     | NULL    |                |
+| chem_out          | int(1)       | NO   |     | 0       |                |
+| chem_out_contin   | text         | NO   |     | NULL    |                |
+| chem_in           | int(1)       | NO   |     | 0       |                |
+| chem_in_contin    | text         | YES  |     | NULL    |                |
+| electrical        | int(1)       | NO   |     | 0       |                |
+| electrical_contin | text         | YES  |     | NULL    |                |
+| cell_body         | int(1)       | YES  |     | 0       |                |
++-------------------+--------------+------+-----+---------+----------------+
+14 rows in set (0.00 sec)
+
+mysql> show columns from display2;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| x1         | int(11)      | YES  |     | NULL    |                |
+| y1         | int(11)      | YES  |     | NULL    |                |
+| z1         | int(11)      | YES  |     | NULL    |                |
+| cellbody1  | tinyint(4)   | YES  |     | NULL    |                |
+| remarks1   | varchar(240) | YES  |     | NULL    |                |
+| continNum  | int(11)      | YES  |     | NULL    |                |
+| segmentNum | smallint(6)  | YES  |     | NULL    |                |
+| idx        | int(11)      | NO   | PRI | NULL    | auto_increment |
+| branch1    | tinyint(4)   | YES  |     | 0       |                |
+| objName1   | varchar(20)  | YES  |     | NULL    |                |
+| series1    | varchar(30)  | YES  |     | NULL    |                |
+| x2         | int(11)      | YES  |     | NULL    |                |
+| y2         | int(11)      | YES  |     | NULL    |                |
+| z2         | int(11)      | YES  |     | NULL    |                |
+| cellbody2  | tinyint(4)   | YES  |     | NULL    |                |
+| remarks2   | varchar(240) | YES  |     | NULL    |                |
+| branch2    | tinyint(4)   | YES  |     | 0       |                |
+| objName2   | varchar(20)  | YES  |     | NULL    |                |
+| series2    | varchar(30)  | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+19 rows in set (0.00 sec)
+
+mysql> show columns from holes;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| index       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| Name        | varchar(250) | YES  |     | NULL    |                |
+| IMG_Number  | varchar(250) | YES  |     | NULL    |                |
+| patch_index | int(100)     | YES  |     | NULL    |                |
+| area        | int(255)     | YES  |     | NULL    |                |
+| cx          | int(255)     | YES  |     | NULL    |                |
+| cy          | int(255)     | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> show columns from image;
++---------------------+----------------+------+-----+---------+-------+
+| Field               | Type           | Null | Key | Default | Extra |
++---------------------+----------------+------+-----+---------+-------+
+| ID                  | int(4)         | YES  |     | NULL    |       |
+| IMG_Number          | varchar(18)    | YES  |     | NULL    |       |
+| IMG_File            | varchar(24)    | YES  |     | NULL    |       |
+| IMG_Directory       | varchar(13)    | YES  |     | NULL    |       |
+| IMG_Worm            | varchar(3)     | YES  |     | NULL    |       |
+| IMG_Series          | varchar(2)     | YES  |     | NULL    |       |
+| IMG_PrintNumber     | int(3)         | YES  |     | NULL    |       |
+| IMG_NegativeNumber  | varchar(2)     | YES  |     | NULL    |       |
+| IMG_SectionNumber   | int(3)         | YES  |     | NULL    |       |
+| IMG_EnteredBy       | varchar(6)     | YES  |     | NULL    |       |
+| IMG_DateEntered     | varchar(10)    | YES  |     | NULL    |       |
+| IMG_zoomValue       | decimal(11,10) | YES  |     | NULL    |       |
+| IMG_brightnessValue | int(3)         | YES  |     | NULL    |       |
+| IMG_contrastValue   | int(3)         | YES  |     | NULL    |       |
+| IMG_rotatedValue    | int(1)         | YES  |     | NULL    |       |
+| IMG_Remarks         | varchar(10)    | YES  |     | NULL    |       |
+| IMG_originX         | int(5)         | YES  |     | NULL    |       |
+| IMG_originY         | int(5)         | YES  |     | NULL    |       |
++---------------------+----------------+------+-----+---------+-------+
+18 rows in set (0.01 sec)
+
+mysql> show columns from relationship;
++-------------+------------------+------+-----+---------+----------------+
+| Field       | Type             | Null | Key | Default | Extra          |
++-------------+------------------+------+-----+---------+----------------+
+| relID       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| REL_Remarks | varchar(254)     | YES  |     | NULL    |                |
+| ObjName1    | int(11) unsigned | NO   | MUL | 0       |                |
+| ObjName2    | int(11) unsigned | NO   | MUL | 0       |                |
+| segmentNum  | int(11)          | YES  | MUL | 0       |                |
+| continNum   | int(11)          | YES  | MUL | NULL    |                |
++-------------+------------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> show columns from series;
++--------+-------------+------+-----+---------+----------------+
+| Field  | Type        | Null | Key | Default | Extra          |
++--------+-------------+------+-----+---------+----------------+
+| idx    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| series | varchar(20) | YES  |     | NULL    |                |
+| x      | int(11)     | YES  |     | NULL    |                |
+| y      | int(11)     | YES  |     | NULL    |                |
+| z      | int(11)     | YES  |     | NULL    |                |
+| zoomx  | float(10,4) | YES  |     | NULL    |                |
+| zoomy  | float(10,4) | YES  |     | NULL    |                |
+| zoomz  | float(10,4) | YES  |     | 1.0000  |                |
++--------+-------------+------+-----+---------+----------------+
+8 rows in set (0.00 sec)
+
+mysql> show columns from synapsenomultiple;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| idx      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| pre      | varchar(50) | YES  |     | NULL    |                |
+| post     | varchar(50) | YES  |     | NULL    |                |
+| sections | smallint(6) | YES  |     | NULL    |                |
+| type     | varchar(10) | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> show columns from synrecord;
++-------------+-------------------------------+------+-----+---------+----------------+
+| Field       | Type                          | Null | Key | Default | Extra          |
++-------------+-------------------------------+------+-----+---------+----------------+
+| idx         | int(11)                       | NO   | PRI | NULL    | auto_increment |
+| synID       | int(11)                       | YES  |     | NULL    |                |
+| username    | varchar(10)                   | YES  |     | NULL    |                |
+| DateEntered | date                          | YES  |     | NULL    |                |
+| certainty   | set('certain','uncertain')    | YES  |     | certain |                |
+| size        | set('small','normal','large') | YES  |     | normal  |                |
+| partner     | int(11)                       | YES  |     | NULL    |                |
++-------------+-------------------------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+
