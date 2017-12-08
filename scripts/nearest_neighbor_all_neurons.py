@@ -29,8 +29,9 @@ def read_synapse_by_neuron():
                 coords = line.rstrip('\n').split('\t')
                 coords = [ split_coord( coord ) for coord in coords ]
                 if len(syn_names) == len(syn_type) and len(syn_type) == len(coords):
-                    neuro_dic[ key ] = pd.DataFrame( {'partner': syn_names, 'type': syn_type, \
-                                                    'coord': coords} )
+                    if 'DROP' not in key:
+                        neuro_dic[ key ] = pd.DataFrame( {'partner': syn_names, 'type': syn_type, \
+                                                          'coord': coords} )
                 else:
                     pass
     return neuro_dic
@@ -70,7 +71,6 @@ def nearest_neighbor( coord, coord_lst ):
     if len(dist_lst) == 0:
         pass
     else:
-        print dist_lst
         return min( dist_lst )
             
 def plot_histogram( dist_list, comboes, out_name=None ):
@@ -96,27 +96,34 @@ def print_output( dist_dic ):
     for combo in dist_dic.keys():
         print combo
         print dist_dic[ combo ]
-    
+        
+def plot_means( mean_dic ):
+    plt.figure()
+    neurons, y, e = [], [], []
+    for key in mean_dic.keys():
+        neurons.append( key )
+        y.append( mean_dic[ key ][0] )
+        e.append( mean_dic[ key ][1] )
+    plt.errorbar( range( len( neurons ) ), y, e, linestyle='None', marker='o', color='red', rasterized=True, ecolor='black', markersize=3 )
+    plt.xticks( range( len(neurons) ), neurons, rotation='vertical', fontsize=3 )
+    plt.show()
+    plt.close()
         
 def main():
     neuro_dic = read_synapse_by_neuron()
-    combos = [ 'pre_pre', 'pre_post', 'post_post', 'all_all', 'post_pre', 'gap_gap', 'pre_gap',\
+    combos = [ 'all_all', 'pre_pre', 'pre_post', 'post_post', 'post_pre', 'gap_gap', 'pre_gap',\
                'post_gap', 'pre_all', 'post_all', 'gap_all', 'pre_gap', 'gap_post', 'gap_pre' ]
-    #combos = [ 'pre_pre', 'pre_post' ]
-    dist_dic = {}
+    dist_dic, mean_dic = {}, {}
     for combo in combos:
         type1, type2 = combo.split('_')[0], combo.split('_')[1]
         dist_dic[ combo ] = []
+        mean_dic[ combo ] = {}
         for neuron in neuro_dic.keys():
-            dist_dic[ combo ] = dist_dic[ combo ] + intra_neuro_distances( neuro_dic[ neuron ], type1, type2 )
-    print dist_dic       
-        #ndist_dic[ combo ] = transform_dist( dist_dic[ combo ] )
-    #plot_histogram( dist_dic, [ 'pre_pre', 'pre_post', 'all_all', 'gap_gap', 'post_post', 'post_pre', 'pre_gap', 'post_gap' ], 'most_comboes' )
-    #plot_histogram( dist_dic, [ 'pre_all', 'post_all', 'gap_all' ], 'synapse_to_all.png' )
-    #plot_histogram( dist_dic, [ 'pre_pre', 'pre_post', 'post_post' ] )
-    #print_output( dist_dic )
-    plot_histogram( dist_dic, [ 'pre_pre', 'pre_all', 'pre_post', 'pre_gap', 'all_all'], 'no_t_pre_distances.png')
-    plot_histogram( dist_dic, [ 'post_post', 'post_all', 'post_pre', 'post_gap', 'all_all' ], 'no_t_post_distances.png')
-    plot_histogram( dist_dic, [ 'gap_gap', 'gap_post', 'gap_pre', 'all_all', 'gap_all' ], 'no_t_gap_distances.png')
-    print_output( dist_dic )
+            dist = intra_neuro_distances( neuro_dic[ neuron ], type1, type2 )
+            #dist = transform_dist( dist )
+            dist_dic[ combo ] = dist_dic[ combo ] + dist
+            if np.mean( dist ) != None:
+                mean_dic[ combo ][ neuron ] = [ np.mean( dist ), np.std( dist ) ]
+        break
+    plot_means( mean_dic['all_all'] )
 main()
