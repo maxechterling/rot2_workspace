@@ -53,8 +53,7 @@ def get_coords( neuron_dic ):
             if len(coord) > 0:
                 x.append( coord[0] ), y.append( coord[1] ), z.append( coord[2] )
     return x, y, z
-        
-    
+
 def main():
     neuron_dic = extend_neuron_df( read_synapse_by_neuron() )
     x, y, z = get_coords( neuron_dic )

@@ -3,7 +3,7 @@
 """
 
 Usage:
-./neuron_linker.py synapse_by_neuron.txt
+./neuron_linker.py synapse_by_neuron.txt adjacency.csv
 
 """
 
@@ -54,7 +54,7 @@ def extend_neuron_df( neuro_dic ):
 def neuro_list( neuro_dic ):
     neurons = []
     for neuron in neuro_dic.keys():
-        if 'blue' in neuron or 'DROP' in neuron or 'glial' in neuron or 'obj' in neuron or 'v' in neuron or 'd' in neuron:
+        if 'blue' in neuron or 'DROP' in neuron or 'glial' in neuron or 'obj' in neuron:
             pass
         else:
             neurons.append( neuron )
@@ -72,7 +72,7 @@ def convert_coord_lst( coords ):
     
 def score_distance( neuro1, neuro2, neuro_df, pair ):
     if neuro1 == neuro2:
-        return 'Nan'
+        return 'NaN'
     n1 = np.array( subset( neuro_df, pair[0], neuro1 )[[ 'coord' ]].values )
     if len( n1 ) == 0:
         return 'NaN'
@@ -82,8 +82,21 @@ def score_distance( neuro1, neuro2, neuro_df, pair ):
     else:
         n = len( n1 ) * len( n2 )
         pdist = cdist( convert_coord_lst( n1 ), convert_coord_lst( n2 ) )
-        score = n / np.log( sum( [ sum( x ) for x in pdist ] ) / n )
+        score = scoring_method1( pdist, n )
         return score
+        
+def scoring_method1( distances, n ):
+    return n / np.log( sum( [ sum( x ) for x in distances ] ) / n )
+
+def scoring_method2( distances ):
+    summed = 0
+    for d in distances:
+        for d2 in d:
+            summed = summed + ( 1 / d2 )
+    return -np.log( summed )
+
+def scoring_method3( distances ):
+    pass
 
 def score_matrix( neurons, neuro_df, neuro_name, pair ):
     print '>%s' % ( neuro_name )
@@ -93,11 +106,28 @@ def score_matrix( neurons, neuro_df, neuro_name, pair ):
             d1.append( score_distance( n1, n2, neuro_df, pair ) )
         print ', '.join( map( str, d1 ) )
 
+def read_adj_order( neurons ):
+    with open( sys.argv[2] ) as f:
+        count, adj_lst, final_lst = 0, [], []
+        for line in f:
+            if count == 0 or count == 1:
+                count += 1
+            elif line.lstrip(',,').rstrip(',\r\n').split(',')[3] == 'I2R':
+                break
+            else:
+                adj_lst.append( line.rstrip(',\r\n').split(',')[1] )
+        for neuron in adj_lst:
+            if neuron in set( neurons ):
+                final_lst.append( neuron )
+        return final_lst
+                
+                
 def main():
     neuro_dic = extend_neuron_df ( read_synapse_by_neuron() )
     neurons = neuro_list( neuro_dic )
+    adj_lst = read_adj_order( neurons )
     print '##COLUMNS: %s' % ( ', '.join( neurons ) )
-    for neuron in neurons:
+    for neuron in adj_lst:
         score_matrix( neurons, neuro_dic[ neuron ], neuron, [ 'pre', 'pre' ] )
     print 'END'
     
