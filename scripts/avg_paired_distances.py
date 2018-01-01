@@ -79,30 +79,51 @@ def find_centroids_stds( centroid_dic, group_size, min_group_size ):
     return std_dic
 
 def get_all_neighbors( grouped_dic ):
+    neighbors = []
     for neuron in grouped_dic:
         for line in grouped_dic[ neuron ].values:
             top_ind, dist = nearest_neighbor( line[2], grouped_dic[ neuron ][['centroid']].values )
             dist_stdev = dist + line[1] + grouped_dic[ neuron ]['stdev'].values[ top_ind ]
-            print line[0], grouped_dic[ neuron ]['partner'].values[ top_ind ], dist_stdev
+            if math.isnan( dist_stdev ) == False and dist_stdev < 10000000q:
+                print line[0], grouped_dic[ neuron ]['partner'].values[ top_ind ], dist_stdev
+                neighbors.append( dist_stdev )
+    return neighbors
             
 def nearest_neighbor( coord, coord_lst ):
     dist_lst = []
     for coord2 in coord_lst:
         if len( coord2[0] ) < 3:
-            dist_lst.append( 5000000000 )
+            dist_lst.append( 100000000 )
         elif coord[0] == coord2[0][0] and coord[1] == coord2[0][1] and coord[2] == coord2[0][2]:
-            dist_lst.append( 5000000000 )
+            dist_lst.append( 100000000 )
         elif coord != coord2:
             dist_lst.append( norm( coord - coord2[0] ) )
     if len(dist_lst) == 0:
         pass
     else:
         return dist_lst.index( min( dist_lst ) ), min( dist_lst )
+        
+def plot_histogram( neighbors1, neighbors2, neighbors3 ):
+    plt.figure()
+    plt.hist( neighbors1, bins=300, color='red', alpha=0.8, label='1' )
+    plt.hist( neighbors2, bins=300, color='gray', alpha=0.8, label='4' )
+    plt.hist( neighbors3, bins=300, color='black', alpha=0.8, label='6' )
+    plt.legend()
+    plt.xlabel( 'distance + SDs')
+    plt.ylabel( 'count' )
+    plt.savefig( 'paired_distance_grouping_histogram' )
+    plt.close()
     
 def main():
     neuro_dic = extend_neuron_df( read_synapse_by_neuron() )
-    grouped_dic = group_by_partner( neuro_dic, 2 )
-    get_all_neighbors( grouped_dic )
+    #grouped_dic = group_by_partner( neuro_dic, 1 )
+    #grouped_dic5 = group_by_partner( neuro_dic, 4 )
+    grouped_dic8 = group_by_partner( neuro_dic, 6 )
+    #neighbors1 = get_all_neighbors( grouped_dic )
+    #neighbors2 = get_all_neighbors( grouped_dic5 )
+    neighbors3 = get_all_neighbors( grouped_dic8 )
+    #plot_histogram( neighbors1, neighbors2, neighbors3 )
+    
     
     
 main()
