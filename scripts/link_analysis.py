@@ -3,7 +3,7 @@
 """
 
 Usage:
-./link_analysis.py pre_post_dist.link pre_pre_dist.link
+./link_analysis.py dist.link adjacency.csv
 
 """
 
@@ -30,13 +30,49 @@ def read_link( link ):
             else:
                 matrix.append( line.rstrip('\r\n').split(', ') )
     return neuron_dic
+
+def sum_distances( dist_dic ):
+    first = True
+    for neuron, df in dist_dic.items():
+        df = df.astype('float').fillna( value=0 )
+        if first is True:
+            master_df = df
+            first = False
+        else:
+            master_df.add( df )
+    return master_df
     
-def pull_interacting_neurons( neuron_df ):
-    print neuron_df.convert_objects( convert_numeric=True )
-    pass
-    
+def read_adj_matrix():
+    adj_matrix = []
+    with open( sys.argv[2] ) as f:
+        rows, count = [], 0
+        for line in f:
+            if count == 0:
+                count += 1
+            elif count == 1:
+                columns = line.split(',')[2:-1]
+                count += 1
+            elif line.split(',')[4] == 'I2L':
+                break
+            else:
+                rows.append( line.split(',')[1] )
+                adj_matrix.append( line.split(',')[2:-1] )
+    return pd.DataFrame( adj_matrix, columns=columns, index=rows )
+                
+def align_dataframes( master_df, adj_df ):
+    master_neurons, adj_c, adj_r = set( master_df.columns ), set( adj_df.columns ), \
+                                   set( adj_df.index )
+    neurons_oi = list( adj_c & adj_r & master_neurons )
+    return master_df[ neurons_oi ].reindex( neurons_oi ), adj_df[ neurons_oi ].reindex( neurons_oi )
+                
 def main():
-    pre_post_dic = read_link( sys.argv[1] )
-    pull_interacting_neurons( pre_post_dic[ 'AVAR' ] )
+    dist_dic = read_link( sys.argv[1] )
+    master_df = sum_distances( dist_dic )
+    adj_df = read_adj_matrix()
+    master_df, adj_df = align_dataframes( master_df, adj_df )
+    print adj_df
+    #print master_df.columns, master_df.index
 
 main()
+
+#neuron_df.convert_objects( convert_numeric=True )
