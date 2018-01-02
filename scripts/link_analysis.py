@@ -9,6 +9,7 @@ Usage:
 
 import sys
 import pandas as pd
+from itertools import izip
 
 def read_link( link ):
     neuron_dic = {}
@@ -64,15 +65,21 @@ def align_dataframes( master_df, adj_df ):
                                    set( adj_df.index )
     neurons_oi = list( adj_c & adj_r & master_neurons )
     return master_df[ neurons_oi ].reindex( neurons_oi ), adj_df[ neurons_oi ].reindex( neurons_oi )
-                
+    
+def merged_output( master_df, adj_df ):
+    for master, adj in izip(master_df.values, adj_df.values):
+        merged_line = []
+        for i in range( len( master ) ):
+            if master[i] == 0:
+                merged_line.append( '' )
+            
+        ## TODO: finish
+                              
 def main():
     dist_dic = read_link( sys.argv[1] )
     master_df = sum_distances( dist_dic )
     adj_df = read_adj_matrix()
     master_df, adj_df = align_dataframes( master_df, adj_df )
-    print adj_df
-    #print master_df.columns, master_df.index
-
+    merged_output( master_df, adj_df )
+    
 main()
-
-#neuron_df.convert_objects( convert_numeric=True )
