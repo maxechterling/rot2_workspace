@@ -72,7 +72,7 @@ def merged_output( master_df, adj_df ):
         for i in range( len( master ) ):
             if master[i] == 0:
                 merged_line.append( '' )
-            
+        print merged_line
         ## TODO: finish
                               
 def main():
