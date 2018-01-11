@@ -45,20 +45,12 @@ def make_entry( partners, types, coords, type_oi ):
                     entry[p] = [ coords[i] ]
     return entry
     
-# def connected_components( simple_graph ):
-#     explored, queue = [], [ simple_graph.keys()[0] ]
-#     while queue:
-#         if queue[0] not in set( explored ):
-#             explored.append( queue[0] )
-#             if queue[0] in simple_graph.keys():
-#                 to_visit = set( simple_graph[ queue[0] ] ) - set( explored )
-#                 queue = queue + list( to_visit )
-#         del queue[0]
-#     #print set( simple_graph.keys() ) - set( explored )
+def find_strong_component( simple_graph ):
+	for neuron in simple_graph.keys():
+		print neuron
         
 def main():
     coord_graph, simple_graph = graph_dic( 'post' )
-    print len( simple_graph.keys() )
-    connected = connected_components( simple_graph )
+    connected = find_strong_component( simple_graph )
     
 main()

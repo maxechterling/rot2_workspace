@@ -11,7 +11,6 @@ import sys
 import pandas as pd
 import numpy as np
 from numpy.linalg import norm
-import matplotlib.pyplot as plt
 import math
 from sklearn.metrics.pairwise import pairwise_distances
 from scipy.spatial.distance import cdist
@@ -87,13 +86,11 @@ def score_distance( neuro1, neuro2, neuro_df, pair ):
         
 def scoring_method1( distances, n ):
     return n / np.log( sum( [ sum( x ) for x in distances ] ) / n )
+    #print n / np.log( sum( [ sum( x ) for x in distances ] ) / n )
 
-def scoring_method2( distances ):
-    summed = 0
-    for d in distances:
-        for d2 in d:
-            summed = summed + ( 1 / d2 )
-    return -np.log( summed )
+
+def scoring_method2( distances, n ):
+    return 1 / np.log( sum( [ sum( x ) for x in distances ] ) / n )
 
 def scoring_method3( distances ):
     pass
