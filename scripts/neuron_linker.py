@@ -14,6 +14,7 @@ from numpy.linalg import norm
 import math
 from sklearn.metrics.pairwise import pairwise_distances
 from scipy.spatial.distance import cdist
+import timeit
 
 def split_coord( coord ):
     coord = coord.lstrip('(').rstrip(')').split()
@@ -62,6 +63,8 @@ def neuro_list( neuro_dic ):
 def subset( neuro_df, type, partner ):
     by_type = neuro_df[ neuro_df['type'] == type ]
     return by_type[ by_type ['partner'] == partner ]
+    # typ_df = neuro_df[ neuro_df.type.isin( [type] ) ]
+    # return typ_df[ typ_df.partner.isin( [ partner ] ) ]
 
 def convert_coord_lst( coords ):
     converted = []
@@ -125,7 +128,7 @@ def main():
     adj_lst = read_adj_order( neurons )
     print '##COLUMNS: %s' % ( ', '.join( neurons ) )
     for neuron in adj_lst:
-        score_matrix( neurons, neuro_dic[ neuron ], neuron, [ 'pre', 'pre' ] )
+        score_matrix( neurons, neuro_dic[ neuron ], neuron, [ 'pre', 'post' ] )
     print 'END'
     
 main()

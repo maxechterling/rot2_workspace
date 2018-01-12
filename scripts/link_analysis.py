@@ -67,19 +67,28 @@ def align_dataframes( master_df, adj_df ):
     return master_df[ neurons_oi ].reindex( neurons_oi ), adj_df[ neurons_oi ].reindex( neurons_oi )
     
 def merged_output( master_df, adj_df ):
+    order = master_df.columns.values
+    merged_df = []
     for master, adj in izip(master_df.values, adj_df.values):
         merged_line = []
         for i in range( len( master ) ):
-            if master[i] == 0:
-                merged_line.append( '' )
-        print merged_line
-        ## TODO: finish
+            if adj[i] == '':
+                merged_line.append( str( master[i] ) + '/' + '0' )
+            else:
+                merged_line.append( str( master[i] ) + '/' + str( adj[i] ) )
+        merged_df.append( merged_line )
+    return pd.DataFrame( merged_df, columns=order, index=order )
+            
+            
+        
                               
 def main():
     dist_dic = read_link( sys.argv[1] )
     master_df = sum_distances( dist_dic )
     adj_df = read_adj_matrix()
     master_df, adj_df = align_dataframes( master_df, adj_df )
-    merged_output( master_df, adj_df )
+    merged = merged_output( master_df, adj_df )
+    #master_df.to_csv( 'pre_pre_master.csv' )
+    master_df.to_csv( 'pre_pre_merged.csv' )
     
 main()
